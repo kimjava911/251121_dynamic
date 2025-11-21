@@ -19,6 +19,14 @@
         <button>검색</button>
     </form>
 
+    <h3>step2 : choose/when</h3>
+    <form method="get" action="<%=request.getContextPath()%>/step2">
+        <input name="title" placeholder="검색할 제목">
+        <input name="content" placeholder="검색할 내용">
+        <input name="writer" placeholder="검색할 작성자">
+        <button>검색</button>
+    </form>
+
     <%
         String msg = (String) request.getAttribute("msg");
         if (msg != null) {

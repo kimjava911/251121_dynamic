@@ -75,4 +75,27 @@
             AND view_count >= #{minViewCount}
         </if>
     </select>
+
+    <select id="searchBoardsWithChoose"
+            parameterType="kr.java.dynamic.model.dto.BoardSearchDTO"
+            resultMap="BoardResultMap">
+        SELECT
+        <include refid="boardColumns" />
+        FROM BOARD
+        WHERE 1 = 1 -- 뒤에 어떤 AND절이 붙어도 괜찮게
+        <choose>
+            <when test="title != null and title != ''">
+                AND title LIKE CONCAT('%', #{title}, '%')
+            </when>
+            <when test="content != null and content != ''">
+                AND content LIKE CONCAT('%', #{content}, '%')
+            </when>
+            <when test="writer != null and writer != ''">
+                AND writer LIKE CONCAT('%', #{writer}, '%')
+            </when>
+            <otherwise>
+                AND created_at >= DATE_SUB(NOW(), INTERVAL 1 MINUTE)
+            </otherwise>
+        </choose>
+    </select>
 </mapper>

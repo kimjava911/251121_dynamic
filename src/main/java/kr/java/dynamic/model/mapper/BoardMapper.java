@@ -13,4 +13,7 @@ public interface BoardMapper {
 
     // if 태그
     List<Board> searchBoardsWithIf(BoardSearchDTO dto);
+
+    // choose 태그 -> 우선순위 -> 먼저 우선순위가 있는게 검색이 되면 뒤는 무시
+    List<Board> searchBoardsWithChoose(BoardSearchDTO dto);
 }
