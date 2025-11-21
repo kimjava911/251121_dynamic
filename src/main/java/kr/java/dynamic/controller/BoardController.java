@@ -1,6 +1,7 @@
 package kr.java.dynamic.controller;
 
 import kr.java.dynamic.model.domain.Board;
+import kr.java.dynamic.model.dto.BoardSearchDTO;
 import kr.java.dynamic.model.mapper.BoardMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -42,5 +43,13 @@ public class BoardController {
             redirectAttributes.addFlashAttribute("msg", "에러 발생");
             return "redirect:/board";
         }
+    }
+
+    @GetMapping("/step1")
+    public String step1(
+            @ModelAttribute BoardSearchDTO dto,
+            Model model) {
+        model.addAttribute("boards", boardMapper.searchBoardsWithIf(dto));
+        return "index";
     }
 }

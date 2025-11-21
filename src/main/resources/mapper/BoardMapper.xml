@@ -53,4 +53,26 @@
         INSERT INTO BOARD (title, content, writer)
         VALUES (#{title}, #{content}, #{writer})
     </insert>
+
+    <select id="searchBoardsWithIf"
+                parameterType="kr.java.dynamic.model.dto.BoardSearchDTO"
+                resultMap="BoardResultMap">
+        SELECT
+            <include refid="boardColumns" />
+        FROM BOARD
+        WHERE 1 = 1 -- 뒤에 어떤 AND절이 붙어도 괜찮게
+        <if test="title != null and title != ''">
+            -- '%' -> LIKE -> 앞뒤로 어떤 것이 붙어도 검색되게 하겠다
+            AND title LIKE CONCAT('%', #{title}, '%')
+        </if>
+        <if test="content != null and content != ''">
+            AND content LIKE CONCAT('%', #{content}, '%')
+        </if>
+        <if test="writer != null and writer != ''">
+            AND writer LIKE CONCAT('%', #{writer}, '%')
+        </if>
+        <if test="minViewCount != null">
+            AND view_count >= #{minViewCount}
+        </if>
+    </select>
 </mapper>

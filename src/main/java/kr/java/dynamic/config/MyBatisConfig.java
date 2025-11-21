@@ -2,6 +2,7 @@ package kr.java.dynamic.config;
 
 import io.github.cdimascio.dotenv.Dotenv;
 import org.apache.commons.dbcp2.BasicDataSource;
+import org.apache.ibatis.logging.stdout.StdOutImpl;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.annotation.MapperScan;
@@ -37,6 +38,12 @@ public class MyBatisConfig {
         System.out.println("SQL 세션 만들기 시작");
         SqlSessionFactoryBean bean = new SqlSessionFactoryBean();
         bean.setDataSource(dataSource);
+
+        // 로깅
+        org.apache.ibatis.session.Configuration config = new org.apache.ibatis.session.Configuration();
+        config.setLogImpl(StdOutImpl.class);   // 여기서 STDOUT 로깅 강제
+        bean.setConfiguration(config);
+
         // Mapper XML
         bean.setMapperLocations(
                 new PathMatchingResourcePatternResolver()

@@ -9,6 +9,16 @@
     <nav>
         <a href="<%=request.getContextPath()%>/board">작성하기</a>
     </nav>
+
+    <h3>step1 : if</h3>
+    <form method="get" action="<%=request.getContextPath()%>/step1">
+        <input name="title" placeholder="검색할 제목">
+        <input name="content" placeholder="검색할 내용">
+        <input name="writer" placeholder="검색할 작성자">
+        <input name="minViewCount" placeholder="최소 조회수">
+        <button>검색</button>
+    </form>
+
     <%
         String msg = (String) request.getAttribute("msg");
         if (msg != null) {
