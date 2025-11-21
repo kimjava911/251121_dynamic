@@ -4,5 +4,53 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="kr.java.dynamic.model.mapper.BoardMapper">
+    <!-- alias를 주는 대신에... -->
+    <resultMap id="BoardResultMap" type="kr.java.dynamic.model.domain.Board">
+        <id property="id" column="board_id" />
+        <!-- case 문제가 없음 -->
+        <result property="title" column="title" />
+        <result property="content" column="content" />
+        <result property="writer" column="writer" />
+        <!-- domain : camelCase, table : snake_case -->
+        <result property="viewCount" column="view_count" />
+        <result property="createdAt" column="created_at" />
+        <result property="updatedAt" column="updated_at" />
+    </resultMap>
 
+    <!-- 공통 컬럼 -->
+    <sql id="boardColumns">
+        board_id, title, content, writer,
+        view_count, created_at, updated_at
+    </sql>
+
+    <select id="findAll" resultMap="BoardResultMap">
+        SELECT
+--             board_id,
+--             title,
+--             content,
+--             writer,
+--             view_count,
+--             created_at,
+--             updated_at
+            <include refid="boardColumns" />
+        FROM
+            BOARD
+        ORDER BY
+            board_id DESC
+    </select>
+
+    <select id="findById" parameterType="int" resultMap="BoardResultMap">
+        SELECT
+            <include refid="boardColumns" />
+        FROM
+            BOARD
+        WHERE id = #{id}
+    </select>
+
+    <insert id="insert"
+            parameterType="kr.java.dynamic.model.domain.Board"
+            useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO BOARD (title, content, writer)
+        VALUES (#{title}, #{content}, #{writer})
+    </insert>
 </mapper>
