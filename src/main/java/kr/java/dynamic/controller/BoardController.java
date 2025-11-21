@@ -60,4 +60,12 @@ public class BoardController {
         model.addAttribute("boards", boardMapper.searchBoardsWithChoose(dto));
         return "index";
     }
+
+    @GetMapping("/step3")
+    public String step3(
+            @ModelAttribute BoardSearchDTO dto,
+            Model model) {
+        model.addAttribute("boards", boardMapper.searchBoardsWithWhere(dto));
+        return "index";
+    }
 }
