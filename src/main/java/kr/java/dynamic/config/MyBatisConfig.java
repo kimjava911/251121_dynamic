@@ -12,11 +12,12 @@ import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import javax.sql.DataSource;
 
 @Configuration
-//@MapperScan("kr.java.dynamic.model.mapper") // Mapper Interface
+@MapperScan("kr.java.dynamic.model.mapper") // Mapper Interface
 public class MyBatisConfig {
 
     @Bean
     public DataSource dataSource() {
+        System.out.println("데이터소스 & 커넥션 풀 시작");
         Dotenv dotenv = Dotenv.configure().ignoreIfMissing().load();
         BasicDataSource ds = new BasicDataSource();
         ds.setDriverClassName("com.mysql.cj.jdbc.Driver");
@@ -27,18 +28,21 @@ public class MyBatisConfig {
         // 커넥션 풀
         ds.setInitialSize(5);
         ds.setMaxTotal(20);
+        System.out.println("데이터소스 & 커넥션 풀 완료");
         return ds;
     }
 
     @Bean
     public SqlSessionFactory sqlSessionFactory(DataSource dataSource) throws Exception {
+        System.out.println("SQL 세션 만들기 시작");
         SqlSessionFactoryBean bean = new SqlSessionFactoryBean();
         bean.setDataSource(dataSource);
         // Mapper XML
-//        bean.setMapperLocations(
-//                new PathMatchingResourcePatternResolver()
-//                        .getResources("classpath:mapper/*.xml")
-//        );
+        bean.setMapperLocations(
+                new PathMatchingResourcePatternResolver()
+                        .getResources("classpath:mapper/*.xml")
+        );
+        System.out.println("SQL 세션 만들기 완료");
         return bean.getObject();
     }
 }
